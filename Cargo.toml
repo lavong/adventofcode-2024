@@ -1,0 +1,10 @@
+[package]
+name = "adventofcode-2024"
+version = "1.0.0"
+description = "lavong's solutions to advent of code 2024"
+authors = ["Lavong Soysavanh <lavong.soysavanh@gmail.com>"]
+license-file = "LICENSE.txt"
+edition = "2021"
+
+[dependencies]
+itertools = "0.13.0"
