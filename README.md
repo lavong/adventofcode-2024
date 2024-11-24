@@ -4,3 +4,9 @@
 ```
 $ cargo run
 ```
+
+## run single day
+e.g.
+```
+$ cargo run --bin day01-1
+```
