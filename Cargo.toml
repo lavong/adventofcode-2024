@@ -5,6 +5,7 @@ description = "lavong's solutions to advent of code 2024"
 authors = ["Lavong Soysavanh <lavong.soysavanh@gmail.com>"]
 license-file = "LICENSE.txt"
 edition = "2021"
+default-run = "adventofcode-2024"
 
 [dependencies]
 itertools = "0.13.0"
