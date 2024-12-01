@@ -12,9 +12,7 @@ fn main() -> io::Result<()> {
         .map(|(n, m)| (n.parse::<usize>().unwrap(), m.parse::<usize>().unwrap()))
         .unzip();
 
-    let total_distance: usize = left
-        .iter()
-        .sorted()
+    let total_distance: usize = (left.iter().sorted())
         .zip(right.iter().sorted())
         .map(|(n, m)| n.abs_diff(*m))
         .sum();
