@@ -8,20 +8,20 @@ fn main() -> io::Result<()> {
 
     let reactors_considered_safe = input
         .lines()
-        .filter(|line| {
-            is_safe(line) || {
-                let levels = line.split_whitespace().collect_vec();
-                (0..levels.len()).any(|i| {
-                    let mut permutation = levels.clone();
-                    permutation.remove(i);
-                    is_safe(&permutation.join(" "))
-                })
-            }
-        })
+        .filter(|line| is_safe(line) || considered_safe(line))
         .count();
 
     println!("solution part 2: {reactors_considered_safe}");
     Ok(())
+}
+
+fn considered_safe(line: &str) -> bool {
+    let levels = line.split_whitespace().collect_vec();
+    (0..levels.len()).any(|i| {
+        let mut permutation = levels.clone();
+        permutation.remove(i);
+        is_safe(&permutation.join(" "))
+    })
 }
 
 fn is_safe(line: &str) -> bool {
