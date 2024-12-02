@@ -8,9 +8,8 @@ fn main() -> io::Result<()> {
 
     let reactors_considered_safe = input
         .lines()
-        .filter(|line| match is_safe(line) {
-            true => true,
-            false => {
+        .filter(|line| {
+            is_safe(line) || {
                 let levels = line.split_whitespace().collect_vec();
                 (0..levels.len())
                     .map(|i| {
