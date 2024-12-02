@@ -11,13 +11,11 @@ fn main() -> io::Result<()> {
         .filter(|line| {
             is_safe(line) || {
                 let levels = line.split_whitespace().collect_vec();
-                (0..levels.len())
-                    .map(|i| {
-                        let mut permutation = levels.clone();
-                        permutation.remove(i);
-                        permutation
-                    })
-                    .any(|p| is_safe(&p.join(" ")))
+                (0..levels.len()).any(|i| {
+                    let mut permutation = levels.clone();
+                    permutation.remove(i);
+                    is_safe(&permutation.join(" "))
+                })
             }
         })
         .count();
