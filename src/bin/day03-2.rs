@@ -14,13 +14,8 @@ fn main() -> io::Result<()> {
             "do()" => do_next = true,
             "don't()" => do_next = false,
             mul if do_next => {
-                let (n, m) = mul
-                    .strip_prefix("mul(")
-                    .unwrap()
-                    .strip_suffix(')')
-                    .unwrap()
-                    .split_once(',')
-                    .unwrap();
+                let p = mul.replace("mul(", "").replace(")", "");
+                let (n, m) = p.split_once(',').unwrap();
                 sum += n.parse::<u32>().unwrap() * m.parse::<u32>().unwrap()
             }
             _ => {}

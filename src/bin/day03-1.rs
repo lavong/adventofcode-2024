@@ -9,14 +9,8 @@ fn main() -> io::Result<()> {
 
     let mut sum = 0;
     for m in regex.find_iter(&input) {
-        let (n, m) = m
-            .as_str()
-            .strip_prefix("mul(")
-            .unwrap()
-            .strip_suffix(')')
-            .unwrap()
-            .split_once(',')
-            .unwrap();
+        let p = m.as_str().replace("mul(", "").replace(")", "");
+        let (n, m) = p.split_once(',').unwrap();
         sum += n.parse::<u32>().unwrap() * m.parse::<u32>().unwrap()
     }
 
