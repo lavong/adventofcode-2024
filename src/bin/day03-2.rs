@@ -13,7 +13,7 @@ fn main() -> io::Result<()> {
         match m.as_str() {
             "do()" => do_next = true,
             "don't()" => do_next = false,
-            mul => {
+            mul if do_next => {
                 let (n, m) = mul
                     .strip_prefix("mul(")
                     .unwrap()
@@ -21,10 +21,9 @@ fn main() -> io::Result<()> {
                     .unwrap()
                     .split_once(',')
                     .unwrap();
-                if do_next {
-                    sum += n.parse::<u32>().unwrap() * m.parse::<u32>().unwrap()
-                }
+                sum += n.parse::<u32>().unwrap() * m.parse::<u32>().unwrap()
             }
+            _ => {}
         }
     }
 
