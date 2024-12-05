@@ -51,5 +51,5 @@ fn parse_updates(input: &str) -> Vec<Vec<u32>> {
 type PageOrderingRules = HashMap<u32, HashSet<u32>>;
 
 fn applies(rules: &PageOrderingRules, k: &u32, v: &u32) -> bool {
-    rules.get(k).map(|rules| rules.contains(v)).unwrap_or(false)
+    rules.get(k).map(|rule| rule.contains(v)).unwrap_or(false)
 }
