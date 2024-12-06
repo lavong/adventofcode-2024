@@ -7,27 +7,39 @@ fn main() -> io::Result<()> {
     let input = fs::read_to_string("src/bin/day06.txt")?;
     let map = input.lines().map(|l| l.chars().collect_vec()).collect_vec();
 
-    let visited = simulate(&map).len();
+    let obstructions = (simulate(&map).unwrap().iter())
+        .filter(|&&(y, x)| {
+            let mut obstructed_map = map.clone();
+            obstructed_map[y][x] = '#';
+            simulate(&mut obstructed_map).is_none()
+        })
+        .count();
 
-    println!("solution part 1: {visited}");
+    println!("solution part 2: {obstructions}");
     Ok(())
 }
 
-fn simulate(map: &Vec<Vec<char>>) -> Vec<(usize, usize)> {
+fn simulate(map: &Vec<Vec<char>>) -> Option<Vec<(usize, usize)>> {
     let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     let mut dir = 0;
     let (mut y, mut x) = find_guard(map);
     let mut seen = vec![vec![[false; 4]; map[0].len()]; map.len()];
     loop {
+        if seen[y as usize][x as usize][dir] {
+            return None;
+        }
+
         seen[y as usize][x as usize][dir] = true;
         let (dy, dx) = dirs[dir];
         let next = char_at(map, y + dy, x + dx);
         match next {
             ' ' => {
-                return (0..map.len())
-                    .cartesian_product(0..map[0].len())
-                    .filter(|&(y, x)| seen[y][x].iter().any(|&dir_seen| dir_seen))
-                    .collect();
+                return Some(
+                    (0..map.len())
+                        .cartesian_product(0..map[0].len())
+                        .filter(|&(y, x)| seen[y][x].iter().any(|&dir_seen| dir_seen))
+                        .collect(),
+                );
             }
             '#' => dir = (dir + 1) % 4,
             _ => {
