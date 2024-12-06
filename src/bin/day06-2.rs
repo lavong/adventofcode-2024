@@ -31,8 +31,7 @@ fn simulate(map: &Vec<Vec<char>>) -> Option<Vec<(usize, usize)>> {
 
         seen[y as usize][x as usize][dir] = true;
         let (dy, dx) = dirs[dir];
-        let next = char_at(map, y + dy, x + dx);
-        match next {
+        match char_at(map, y + dy, x + dx) {
             ' ' => {
                 return Some(
                     (0..map.len())
