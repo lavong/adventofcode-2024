@@ -9,7 +9,7 @@ fn main() -> io::Result<()> {
 
     let calibration_result: f64 = equations
         .iter()
-        .filter(|(v, nums)| check((*v, nums.clone())))
+        .filter(|(v, nums)| check(*v, nums.clone()))
         .map(|eq| eq.0)
         .sum();
 
@@ -17,9 +17,7 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-type Equation = (f64, Vec<f64>);
-
-fn parse(input: &String) -> Vec<Equation> {
+fn parse(input: &String) -> Vec<(f64, Vec<f64>)> {
     input
         .lines()
         .filter_map(|line| line.split_once(':'))
@@ -35,11 +33,11 @@ fn parse(input: &String) -> Vec<Equation> {
         .collect_vec()
 }
 
-fn check(eq: Equation) -> bool {
-    if eq.1.len() == 1 {
-        return eq.0 == eq.1[0];
+fn check(target: f64, nums: Vec<f64>) -> bool {
+    if nums.len() == 1 {
+        return target == nums[0];
     }
-    let n = eq.1.last().unwrap();
-    return check((eq.0 / n, eq.1.clone().drain(..(eq.1.len() - 1)).collect()))
-        || check((eq.0 - n, eq.1.clone().drain(..(eq.1.len() - 1)).collect()));
+    let n = nums.last().unwrap();
+    return check(target / n, nums.clone().drain(..(nums.len() - 1)).collect())
+        || check(target - n, nums.clone().drain(..(nums.len() - 1)).collect());
 }

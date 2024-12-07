@@ -39,11 +39,15 @@ fn check(target: f64, nums: Vec<f64>) -> bool {
     }
     let n = nums[0];
     let m = nums[1];
-    let mut nm = nums.clone().drain(2..).collect_vec();
-    nm.insert(0, n * m);
-    let mut na = nums.clone().drain(2..).collect_vec();
-    na.insert(0, n + m);
-    let mut nc = nums.clone().drain(2..).collect_vec();
-    nc.insert(0, format!("{}{}", n, m).parse().unwrap());
+
+    let mut nm = vec![n * m];
+    nm.extend(nums.clone().drain(2..));
+
+    let mut na = vec![n + m];
+    na.extend(nums.clone().drain(2..));
+
+    let mut nc = vec![(n * 10f64.powi(m.log10() as i32 + 1) + m)];
+    nc.extend(nums.clone().drain(2..));
+
     return check(target, nm) || check(target, na) || check(target, nc);
 }
