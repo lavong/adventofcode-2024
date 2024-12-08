@@ -22,18 +22,16 @@ fn main() -> io::Result<()> {
     for row in 0..map.len() {
         for col in 0..map[row].len() {
             for antenna in antennas.values() {
-                for (y1, x1) in antenna.iter() {
-                    for (y2, x2) in antenna.iter() {
-                        if (y1, x1) == (y2, x2) {
-                            continue;
-                        }
-                        let dy1 = row.wrapping_sub(*y1) as i32;
-                        let dy2 = row.wrapping_sub(*y2) as i32;
-                        let dx1 = col.wrapping_sub(*x1) as i32;
-                        let dx2 = col.wrapping_sub(*x2) as i32;
-                        if row < map.len() && col < map[0].len() && (dy1 * dx2 == dx1 * dy2) {
-                            antinodes.insert((row, col));
-                        }
+                for (&(y1, x1), &(y2, x2)) in antenna.iter().tuple_combinations() {
+                    if (y1, x1) == (y2, x2) {
+                        continue;
+                    }
+                    let dy1 = row.wrapping_sub(y1) as i32;
+                    let dy2 = row.wrapping_sub(y2) as i32;
+                    let dx1 = col.wrapping_sub(x1) as i32;
+                    let dx2 = col.wrapping_sub(x2) as i32;
+                    if row < map.len() && col < map[0].len() && (dy1 * dx2 == dx1 * dy2) {
+                        antinodes.insert((row, col));
                     }
                 }
             }
