@@ -19,20 +19,20 @@ fn main() -> io::Result<()> {
     }
 
     let mut antinodes: HashSet<(usize, usize)> = HashSet::new();
-    for r in 0..map.len() {
-        for c in 0..map[r].len() {
-            for a in antennas.values() {
-                for (y1, x1) in a.iter() {
-                    for (y2, x2) in a.iter() {
+    for row in 0..map.len() {
+        for col in 0..map[row].len() {
+            for antenna in antennas.values() {
+                for (y1, x1) in antenna.iter() {
+                    for (y2, x2) in antenna.iter() {
                         if (y1, x1) == (y2, x2) {
                             continue;
                         }
-                        let dy1 = r.wrapping_sub(*y1) as i32;
-                        let dy2 = r.wrapping_sub(*y2) as i32;
-                        let dx1 = c.wrapping_sub(*x1) as i32;
-                        let dx2 = c.wrapping_sub(*x2) as i32;
-                        if r < map.len() && c < map[0].len() && (dy1 * dx2 == dx1 * dy2) {
-                            antinodes.insert((r, c));
+                        let dy1 = row.wrapping_sub(*y1) as i32;
+                        let dy2 = row.wrapping_sub(*y2) as i32;
+                        let dx1 = col.wrapping_sub(*x1) as i32;
+                        let dx2 = col.wrapping_sub(*x2) as i32;
+                        if row < map.len() && col < map[0].len() && (dy1 * dx2 == dx1 * dy2) {
+                            antinodes.insert((row, col));
                         }
                     }
                 }
