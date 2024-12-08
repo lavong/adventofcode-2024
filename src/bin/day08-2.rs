@@ -30,7 +30,7 @@ fn main() -> io::Result<()> {
                     let dy2 = row.wrapping_sub(y2) as i32;
                     let dx1 = col.wrapping_sub(x1) as i32;
                     let dx2 = col.wrapping_sub(x2) as i32;
-                    if row < map.len() && col < map[0].len() && (dy1 * dx2 == dx1 * dy2) {
+                    if dy1 * dx2 == dx1 * dy2 {
                         antinodes.insert((row, col));
                     }
                 }
