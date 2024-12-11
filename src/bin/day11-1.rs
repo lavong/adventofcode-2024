@@ -10,6 +10,7 @@ fn main() -> io::Result<()> {
         .split_whitespace()
         .map(|n| n.parse::<u64>().unwrap())
         .collect_vec();
+
     (0..25).for_each(|_| {
         let mut s: Vec<u64> = vec![];
         for i in 0..stones.len() {
@@ -27,6 +28,7 @@ fn main() -> io::Result<()> {
         }
         stones = s;
     });
+
     let stone_count = stones.len();
 
     println!("solution part 1: {stone_count}");

@@ -9,6 +9,7 @@ fn main() -> io::Result<()> {
         .split_whitespace()
         .map(|n| (n.parse::<u64>().unwrap(), 1))
         .collect::<HashMap<u64, u64>>();
+
     (0..75).for_each(|_| {
         let mut s: HashMap<u64, u64> = HashMap::new();
         for (&n, &cache) in &stones {
@@ -26,6 +27,7 @@ fn main() -> io::Result<()> {
         }
         stones = s;
     });
+
     let stone_count: u64 = stones.values().sum();
 
     println!("solution part 2: {stone_count}");
