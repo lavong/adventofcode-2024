@@ -6,14 +6,14 @@ use itertools::Itertools;
 fn main() -> io::Result<()> {
     let input = fs::read_to_string("src/bin/day13.txt")?;
 
-    let games = input
+    let claw_machines = input
         .split(|c: char| !c.is_ascii_digit())
         .filter_map(|w| w.parse().ok())
         .tuples()
         .collect_vec();
 
     const PRIZE_OFFSET: i64 = 10000000000000;
-    let min_total_cost: i64 = games
+    let min_total_cost: i64 = claw_machines
         .iter()
         .filter_map(|(x1, x2, y1, y2, p1, p2)| {
             cost(*x1, *x2, *y1, *y2, PRIZE_OFFSET + *p1, PRIZE_OFFSET + *p2)
