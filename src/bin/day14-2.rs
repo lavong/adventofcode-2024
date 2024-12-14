@@ -6,17 +6,19 @@ use itertools::Itertools;
 fn main() -> io::Result<()> {
     let input = fs::read_to_string("src/bin/day14.txt")?;
 
-    let mut robots: Vec<(i64, i64, i64, i64)> = input
+    const Y: i32 = 101;
+    const X: i32 = 103;
+    let mut robots: Vec<(i32, i32, i32, i32)> = input
         .split(|c: char| !c.is_ascii_digit() && c != '-')
-        .filter_map(|w| w.parse::<i64>().ok())
+        .filter_map(|w| w.parse::<i32>().ok())
         .tuples()
         .collect_vec();
 
     let mut seconds_til_robots_form_a_christmas_tree = 0;
     for t in 1.. {
         for (y, x, dy, dx) in &mut robots {
-            *y = (*y + *dy).rem_euclid(101);
-            *x = (*x + *dx).rem_euclid(103);
+            *y = (*y + *dy).rem_euclid(Y);
+            *x = (*x + *dx).rem_euclid(X);
         }
         if robots.iter().map(|(y, x, _, _)| (y, x)).all_unique() {
             seconds_til_robots_form_a_christmas_tree = t;
@@ -25,8 +27,8 @@ fn main() -> io::Result<()> {
     }
 
     let robot_positions = robots.iter().map(|(y, x, _, _)| (y, x)).collect_vec();
-    for x in 0..101 {
-        for y in 0..103 {
+    for x in 0..Y {
+        for y in 0..X {
             if robot_positions.contains(&(&y, &x)) {
                 print!("#")
             } else {
