@@ -23,7 +23,7 @@ fn main() -> io::Result<()> {
 
 fn cost(x1: i64, x2: i64, y1: i64, y2: i64, p1: i64, p2: i64) -> Option<i64> {
     let b = (p2 * x1 - p1 * x2) / (y2 * x1 - y1 * x2);
-    let a = (p1 - b * y1) / x1;
+    let a = (p2 - y2 * b) / x2;
     if (x1 * a + y1 * b, x2 * a + y2 * b) == (p1, p2) {
         return Some(a * 3 + b);
     }
