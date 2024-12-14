@@ -18,9 +18,7 @@ fn main() -> io::Result<()> {
         advance(&mut robots, X, Y);
     }
 
-    let safety_factor = safety_factor(&robots, X, Y);
-
-    println!("solution part 1: {safety_factor}");
+    println!("solution part 1: {}", safety_factor(&robots, X, Y));
     Ok(())
 }
 
