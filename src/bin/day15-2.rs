@@ -78,8 +78,8 @@ fn attempt_multipush(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32)
                 (1, 0) => seen.iter().sorted_by(|a, b| Ord::cmp(&b.0, &a.0)),
                 _ => seen.iter().sorted_by(|a, b| Ord::cmp(&a.1, &b.1)),
             };
-            for (y3, x3) in seen_sorted {
-                swap_char(map, y3 + dy, x3 + dx, *y3, *x3);
+            for (y, x) in seen_sorted {
+                swap_char(map, y + dy, x + dx, *y, *x);
             }
         }
         _ => {}
