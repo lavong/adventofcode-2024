@@ -73,16 +73,10 @@ fn attempt_multipush(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32)
                 }
             }
             let seen_sorted = match (dy, dx) {
-                (-1, 0) => seen
-                    .iter()
-                    .sorted_by(|a, b| Ord::cmp(&a.0, &b.0))
-                    .collect_vec(),
-                (0, 1) => seen.iter().sorted().rev().collect_vec(),
-                (1, 0) => seen
-                    .iter()
-                    .sorted_by(|a, b| Ord::cmp(&b.0, &a.0))
-                    .collect_vec(),
-                _ => seen.iter().sorted().collect_vec(),
+                (-1, 0) => seen.iter().sorted_by(|a, b| Ord::cmp(&a.0, &b.0)),
+                (0, 1) => seen.iter().sorted_by(|a, b| Ord::cmp(&b.1, &a.1)),
+                (1, 0) => seen.iter().sorted_by(|a, b| Ord::cmp(&b.0, &a.0)),
+                _ => seen.iter().sorted_by(|a, b| Ord::cmp(&a.1, &b.1)),
             };
             for (y3, x3) in seen_sorted {
                 swap_char(map, y3 + dy, x3 + dx, *y3, *x3);
