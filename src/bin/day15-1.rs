@@ -38,15 +38,14 @@ fn play(map: &mut Vec<Vec<char>>, moves: &Vec<char>) {
             '<' => (0, -1),
             _ => (0, 0),
         };
-        attempt_push(&mut *map, y, x, dy, dx);
+        attempt_move(&mut *map, y, x, dy, dx);
     }
 }
 
-fn attempt_push(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32) {
+fn attempt_move(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32) {
     let mut y2 = y + dy;
     let mut x2 = x + dx;
     match char_at(map, y2, x2) {
-        '#' => {}
         '.' => {
             swap_char(map, y, x, y2, x2);
             return;
