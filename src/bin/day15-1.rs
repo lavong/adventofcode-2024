@@ -13,7 +13,7 @@ fn main() -> io::Result<()> {
         .collect_vec();
     let moves = input_moves.chars().filter(|c| *c != '\n').collect_vec();
 
-    play(&mut warehouse, &moves);
+    simulate(&mut warehouse, &moves);
 
     let mut gps_coords_sum = 0;
     for y in 0..warehouse.len() {
@@ -28,7 +28,7 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn play(map: &mut Vec<Vec<char>>, moves: &Vec<char>) {
+fn simulate(map: &mut Vec<Vec<char>>, moves: &Vec<char>) {
     for c in moves {
         let (y, x) = find_robot(&map);
         let (dy, dx) = match c {
@@ -46,10 +46,7 @@ fn attempt_move(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32) {
     let mut y2 = y + dy;
     let mut x2 = x + dx;
     match char_at(map, y2, x2) {
-        '.' => {
-            swap_char(map, y, x, y2, x2);
-            return;
-        }
+        '.' => swap_char(map, y, x, y2, x2),
         'O' => loop {
             y2 += dy;
             x2 += dx;

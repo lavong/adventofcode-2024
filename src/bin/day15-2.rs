@@ -25,7 +25,7 @@ fn main() -> io::Result<()> {
         .collect_vec();
     let moves = input_moves.chars().filter(|c| *c != '\n').collect_vec();
 
-    play(&mut scaled_up_warehouse, &moves);
+    simulate(&mut scaled_up_warehouse, &moves);
 
     let mut gps_coords_sum = 0;
     for y in 0..scaled_up_warehouse.len() {
@@ -40,7 +40,7 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn play(map: &mut Vec<Vec<char>>, moves: &Vec<char>) {
+fn simulate(map: &mut Vec<Vec<char>>, moves: &Vec<char>) {
     for c in moves {
         let (y, x) = find_robot(&map);
         let (dy, dx) = match c {
