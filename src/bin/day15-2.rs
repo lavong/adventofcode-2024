@@ -55,21 +55,19 @@ fn play(map: &mut Vec<Vec<char>>, moves: &Vec<char>) {
 }
 
 fn attempt_multipush(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32) {
-    let mut y2 = y + dy;
-    let mut x2 = x + dx;
-    match char_at(map, y2, x2) {
+    match char_at(map, y + dy, x + dx) {
         '#' => {}
         '.' => {
-            swap_char(map, y, x, y2, x2);
+            swap_char(map, y, x, y + dy, x + dx);
             return;
         }
         '[' | ']' => {
             let mut queue = VecDeque::from([(y, x)]);
             let mut seen: HashSet<(i32, i32)> = HashSet::from([]);
-            while let Some((y3, x3)) = queue.pop_front() {
-                if seen.insert((y3, x3)) {
-                    y2 = y3 + dy;
-                    x2 = x3 + dx;
+            while let Some((y, x)) = queue.pop_front() {
+                if seen.insert((y, x)) {
+                    let y2 = y + dy;
+                    let x2 = x + dx;
                     match char_at(map, y2, x2) {
                         '#' => return,
                         '[' => queue.extend([(y2, x2), (y2, x2 + 1)]),
@@ -91,9 +89,7 @@ fn attempt_multipush(map: &mut Vec<Vec<char>>, y: i32, x: i32, dy: i32, dx: i32)
                 _ => seen.iter().sorted().collect_vec(),
             };
             for (y3, x3) in seen_sorted {
-                y2 = y3 + dy;
-                x2 = x3 + dx;
-                swap_char(map, y2, x2, *y3, *x3);
+                swap_char(map, y3 + dy, x3 + dx, *y3, *x3);
             }
         }
         _ => {}
