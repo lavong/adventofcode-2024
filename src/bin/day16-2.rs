@@ -96,19 +96,19 @@ fn find_shortest_path(
                         cost: cost + 1,
                     });
                 }
+                heap.push(S {
+                    y: y,
+                    x: x,
+                    dir: (dir + 1) % 4,
+                    cost: cost + 1000,
+                });
+                heap.push(S {
+                    y: y,
+                    x: x,
+                    dir: (dir + 3) % 4,
+                    cost: cost + 1000,
+                });
             }
-            heap.push(S {
-                y: y,
-                x: x,
-                dir: (dir + 1) % 4,
-                cost: cost + 1000,
-            });
-            heap.push(S {
-                y: y,
-                x: x,
-                dir: (dir + 3) % 4,
-                cost: cost + 1000,
-            });
         }
     }
     best

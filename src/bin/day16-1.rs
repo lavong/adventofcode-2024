@@ -51,19 +51,19 @@ fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) 
                         cost: cost + 1,
                     });
                 }
+                heap.push(S {
+                    y: y,
+                    x: x,
+                    dir: (dir + 1) % 4,
+                    cost: cost + 1000,
+                });
+                heap.push(S {
+                    y: y,
+                    x: x,
+                    dir: (dir + 3) % 4,
+                    cost: cost + 1000,
+                });
             }
-            heap.push(S {
-                y: y,
-                x: x,
-                dir: (dir + 1) % 4,
-                cost: cost + 1000,
-            });
-            heap.push(S {
-                y: y,
-                x: x,
-                dir: (dir + 3) % 4,
-                cost: cost + 1000,
-            });
         }
     }
     best
