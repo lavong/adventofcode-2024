@@ -29,7 +29,7 @@ fn tiles_on_shortest_paths(
     let mut best = u32::MAX;
     let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
 
-    // forward dijsktra
+    // forward dijkstra
     let mut heap = BinaryHeap::from([S {
         y: start.0,
         x: start.1,
