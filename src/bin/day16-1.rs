@@ -31,7 +31,7 @@ fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) 
         cost: 0,
     }]);
     let mut seen = HashSet::from([]);
-    let mut dist: HashMap<(i32, i32, i32), u32> = HashMap::new();
+    let mut dist = HashMap::new();
     while let Some(S { y, x, dir, cost }) = heap.pop() {
         if !dist.contains_key(&(y, x, dir)) {
             *dist.entry((y, x, dir)).or_default() = cost;
