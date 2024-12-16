@@ -48,7 +48,7 @@ fn tiles_on_shortest_paths(
             cost: 0,
         })
         .collect_vec();
-    find_shortest_path(map, end, dirs2, init_heap2, &mut dist2);
+    find_shortest_path(map, start, dirs2, init_heap2, &mut dist2);
 
     let mut tiles = HashSet::new();
     for dir in 0..dirs.len() {
