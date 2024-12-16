@@ -26,18 +26,57 @@ fn tiles_on_shortest_paths(
     start: (i32, i32),
     end: (i32, i32),
 ) -> HashSet<(usize, usize)> {
-    let mut best = u32::MAX;
-    let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
-
     // forward dijkstra
-    let mut heap = BinaryHeap::from([S {
+    let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
+    let mut dist = HashMap::new();
+    let init_heap1 = vec![S {
         y: start.0,
         x: start.1,
         dir: 1,
         cost: 0,
-    }]);
+    }];
+    let best = find_shortest_path(map, end, dirs, init_heap1, &mut dist);
+
+    // backwards dijkstra for distances
+    let dirs2 = [(1, 0), (0, -1), (-1, 0), (0, 1)];
+    let mut dist2 = HashMap::new();
+    let init_heap2 = (0..dirs2.len())
+        .map(|dir| S {
+            y: end.0,
+            x: end.1,
+            dir: dir as i32,
+            cost: 0,
+        })
+        .collect_vec();
+    find_shortest_path(map, end, dirs2, init_heap2, &mut dist2);
+
+    let mut tiles = HashSet::new();
+    for dir in 0..dirs.len() {
+        for y in 0..map.len() {
+            for x in 0..map[y].len() {
+                let tile = (y as i32, x as i32, dir as i32);
+                if dist.contains_key(&tile)
+                    && dist2.contains_key(&tile)
+                    && dist.get(&tile).unwrap() + dist2.get(&tile).unwrap() == best
+                {
+                    tiles.insert((y, x));
+                }
+            }
+        }
+    }
+    tiles
+}
+
+fn find_shortest_path(
+    map: &Vec<Vec<char>>,
+    end: (i32, i32),
+    dirs: [(i32, i32); 4],
+    initial_heap: Vec<S>,
+    dist: &mut HashMap<(i32, i32, i32), u32>,
+) -> u32 {
+    let mut best = u32::MAX;
+    let mut heap = BinaryHeap::from(initial_heap);
     let mut seen = HashSet::from([]);
-    let mut dist = HashMap::new();
     while let Some(S { y, x, dir, cost }) = heap.pop() {
         if !dist.contains_key(&(y, x, dir)) {
             *dist.entry((y, x, dir)).or_default() = cost;
@@ -72,66 +111,7 @@ fn tiles_on_shortest_paths(
             });
         }
     }
-
-    // backwards dijkstra for distances
-    let mut heap2 = BinaryHeap::from([]);
-    let mut seen2 = HashSet::from([]);
-    let mut dist2 = HashMap::new();
-    for dir in 0..dirs.len() {
-        heap2.push(S {
-            y: end.0,
-            x: end.1,
-            dir: dir as i32,
-            cost: 0,
-        });
-    }
-    while let Some(S { y, x, dir, cost }) = heap2.pop() {
-        if !dist2.contains_key(&(y, x, dir)) {
-            *dist2.entry((y, x, dir)).or_default() = cost;
-        }
-        if seen2.insert((y, x, dir)) {
-            let (dy, dx) = dirs[(2 + dir as usize) % 4];
-            let (y2, x2) = (y + dy, x + dx);
-            if y2 >= 0 && y2 < map.len() as i32 && x2 >= 0 && x2 < map[0].len() as i32 {
-                if char_at(map, y2, x2) != '#' {
-                    heap2.push(S {
-                        y: y2,
-                        x: x2,
-                        dir: dir,
-                        cost: cost + 1,
-                    });
-                }
-            }
-            heap2.push(S {
-                y: y,
-                x: x,
-                dir: (dir + 1) % 4,
-                cost: cost + 1000,
-            });
-            heap2.push(S {
-                y: y,
-                x: x,
-                dir: (dir + 3) % 4,
-                cost: cost + 1000,
-            });
-        }
-    }
-    let mut tiles = HashSet::new();
-    for dir in 0..dirs.len() {
-        for y in 0..map.len() {
-            for x in 0..map[y].len() {
-                let tile = (y as i32, x as i32, dir as i32);
-                if dist.contains_key(&tile)
-                    && dist2.contains_key(&tile)
-                    && dist.get(&tile).unwrap() + dist2.get(&tile).unwrap() == best
-                {
-                    tiles.insert((y, x));
-                }
-            }
-        }
-    }
-
-    tiles
+    best
 }
 
 fn find_char(map: &Vec<Vec<char>>, c: char) -> (i32, i32) {
