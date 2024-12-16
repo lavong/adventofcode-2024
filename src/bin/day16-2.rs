@@ -51,14 +51,11 @@ fn tiles_on_shortest_paths(
     find_shortest_path(map, start, dirs2, init_heap2, &mut dist2);
 
     let mut tiles = HashSet::new();
-    for dir in 0..dirs.len() {
-        for y in 0..map.len() {
-            for x in 0..map[y].len() {
+    for y in 0..map.len() {
+        for x in 0..map[y].len() {
+            for dir in 0..dirs.len() {
                 let tile = (y as i32, x as i32, dir as i32);
-                if dist.contains_key(&tile)
-                    && dist2.contains_key(&tile)
-                    && dist.get(&tile).unwrap() + dist2.get(&tile).unwrap() == best
-                {
+                if dist.get(&tile).unwrap_or(&0) + dist2.get(&tile).unwrap_or(&0) == best {
                     tiles.insert((y, x));
                 }
             }
@@ -92,22 +89,24 @@ fn find_shortest_path(
                     heap.push(S {
                         y: y2,
                         x: x2,
-                        dir: dir,
+                        dir,
                         cost: cost + 1,
                     });
                 }
-                heap.push(S {
-                    y: y,
-                    x: x,
-                    dir: (dir + 1) % 4,
-                    cost: cost + 1000,
-                });
-                heap.push(S {
-                    y: y,
-                    x: x,
-                    dir: (dir + 3) % 4,
-                    cost: cost + 1000,
-                });
+                heap.extend([
+                    S {
+                        y,
+                        x,
+                        dir: (dir + 1) % 4,
+                        cost: cost + 1000,
+                    },
+                    S {
+                        y,
+                        x,
+                        dir: (dir + 3) % 4,
+                        cost: cost + 1000,
+                    },
+                ]);
             }
         }
     }
