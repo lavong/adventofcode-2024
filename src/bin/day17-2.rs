@@ -22,9 +22,9 @@ fn main() -> io::Result<()> {
         .collect_vec();
 
     // brute force no good. we can haz clever solution? ¯\_(ツ)_/¯
-    let solution = Arc::new(AtomicU64::new(0));
-    let num_threads = 8;
     let arbitrary_offset: u64 = a + 47910000000000;
+    let num_threads = 8;
+    let solution = Arc::new(AtomicU64::new(0));
     let mut handles = vec![];
     for t in 1..=num_threads {
         let s = Arc::clone(&solution);
