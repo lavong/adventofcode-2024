@@ -31,20 +31,17 @@ fn main() -> io::Result<()> {
             6 => c,
             _ => operand,
         };
+        ptr += 2;
         match opcode {
             0 => a = a / 2u32.pow(combo),
             1 => b ^= operand,
             2 => b = combo % 8,
+            3 if a != 0 => ptr = operand,
             4 => b ^= c,
             5 => out.push(combo % 8),
             6 => b = a / 2u32.pow(combo),
             7 => c = a / 2u32.pow(combo),
             _ => {}
-        }
-        if a != 0 && opcode == 3 {
-            ptr = operand
-        } else {
-            ptr += 2
         }
     }
     let output = out.iter().join(",");
