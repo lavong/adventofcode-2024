@@ -41,7 +41,6 @@ fn main() -> io::Result<()> {
 
 fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) -> u32 {
     let mut best = u32::MAX;
-    let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     let mut heap = BinaryHeap::from([S {
         y: start.0,
         x: start.1,
@@ -57,8 +56,7 @@ fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) 
             best = cost
         }
         if seen.insert((y, x)) {
-            for dir in 0..dirs.len() {
-                let (dy, dx) = dirs[dir as usize];
+            for (dy, dx) in [(-1, 0), (0, 1), (1, 0), (0, -1)] {
                 let (y2, x2) = (y + dy, x + dx);
                 if char_at(map, y2, x2) != '#' {
                     heap.push(S {
