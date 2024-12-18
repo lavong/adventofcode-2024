@@ -25,17 +25,16 @@ fn main() -> io::Result<()> {
 
     const S: (i32, i32) = (0, 0);
     const E: (i32, i32) = (X as i32 - 1, X as i32 - 1);
-    let mut c = (0, 0);
+    let mut blocker = String::from("x,y");
     for (x, y) in falling_bytes.iter().dropping(I) {
         map[*y as usize][*x as usize] = '#';
         if find_shortest_path(&map, S, E) == u32::MAX {
-            c = (*x, *y);
+            blocker = format!("{},{}", *x, *y);
             break;
         }
     }
-    let blocking_byte_coord = format!("{},{}", c.0, c.1);
 
-    println!("solution part 2: {blocking_byte_coord}");
+    println!("solution part 2: {blocker}");
     Ok(())
 }
 
