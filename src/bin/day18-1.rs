@@ -50,12 +50,7 @@ fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) 
             for dir in 0..dirs.len() {
                 let (dy, dx) = dirs[dir as usize];
                 let (y2, x2) = (y + dy, x + dx);
-                if y2 >= 0
-                    && y2 < map.len() as i32
-                    && x2 >= 0
-                    && x2 < map[0].len() as i32
-                    && char_at(map, y2, x2) != '#'
-                {
+                if char_at(map, y2, x2) != '#' {
                     heap.push(S {
                         y: y2,
                         x: x2,
