@@ -35,7 +35,7 @@ fn main() -> io::Result<()> {
     }
     let blocking_byte_coord = format!("{},{}", c.0, c.1);
 
-    println!("solution part 1: {blocking_byte_coord}");
+    println!("solution part 2: {blocking_byte_coord}");
     Ok(())
 }
 
