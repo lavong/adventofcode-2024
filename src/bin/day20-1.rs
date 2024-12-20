@@ -14,28 +14,22 @@ fn main() -> io::Result<()> {
     let start = find_char(&map, 'S');
     let end = find_char(&map, 'E');
 
-    let mut potential_shortcuts: HashSet<(i32, i32)> = HashSet::new();
-    for y in 0..map.len() {
-        for x in 0..map[y].len() {
-            let a = char_at(&map, y as i32, x as i32);
-            for (dy, dx) in [(-1, 0), (0, 1), (1, 0), (0, -1)] {
-                let b = char_at(&map, y as i32 + dy, x as i32 + dx);
-                if a == '#' && b != '#' {
-                    potential_shortcuts.insert((y as i32, x as i32));
-                }
-            }
-        }
-    }
+    let mut dists_from_start = HashMap::new();
+    let regular_cost = find_shortest_path(&map, &mut dists_from_start, start, end);
 
-    let regular_cost = find_shortest_path(&map, start, end);
+    let mut dists_from_end = HashMap::new();
+    let _ = find_shortest_path(&map, &mut dists_from_end, end, start);
 
     let mut cheats_saving_100_ps = 0;
-    for (y, x) in potential_shortcuts {
-        let mut map2 = map.clone();
-        map2[y as usize][x as usize] = '.';
-        let cost = find_shortest_path(&map2, start, end);
-        if regular_cost - cost >= 100 {
-            cheats_saving_100_ps += 1;
+    for (y, x) in dists_from_start.keys() {
+        for (y2, x2) in dists_from_end.keys() {
+            let dist_cheat = y.abs_diff(*y2) + x.abs_diff(*x2);
+            if dist_cheat <= 2 {
+                let dist = dists_from_start[&(*y, *x)] + dist_cheat + dists_from_end[&(*y2, *x2)];
+                if dist <= regular_cost - 100 {
+                    cheats_saving_100_ps += 1;
+                }
+            }
         }
     }
 
@@ -43,7 +37,12 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) -> u32 {
+fn find_shortest_path(
+    map: &Vec<Vec<char>>,
+    dist: &mut HashMap<(i32, i32), u32>,
+    start: (i32, i32),
+    end: (i32, i32),
+) -> u32 {
     let mut best = u32::MAX;
     let dirs = [(-1, 0), (0, 1), (1, 0), (0, -1)];
     let mut heap = BinaryHeap::from([S {
@@ -52,7 +51,6 @@ fn find_shortest_path(map: &Vec<Vec<char>>, start: (i32, i32), end: (i32, i32)) 
         cost: 0,
     }]);
     let mut seen = HashSet::from([]);
-    let mut dist = HashMap::new();
     while let Some(S { y, x, cost }) = heap.pop() {
         if !dist.contains_key(&(y, x)) {
             *dist.entry((y, x)).or_default() = cost;
