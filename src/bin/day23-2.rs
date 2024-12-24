@@ -18,7 +18,7 @@ fn main() -> io::Result<()> {
         });
 
     let highest_degree = graph.values().map(|v| v.len()).max().unwrap();
-    let mut max_clique: Vec<&str> = Vec::new();
+    let mut max_clique = Vec::new();
     while max_clique.len() < highest_degree {
         let mut ks = graph.keys().collect_vec();
         ks.shuffle(&mut rand::thread_rng());
