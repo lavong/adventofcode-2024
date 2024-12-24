@@ -18,29 +18,23 @@ fn main() -> io::Result<()> {
         });
 
     let highest_degree = graph.values().map(|v| v.len()).max().unwrap();
-    let mut maximum_clique: Vec<&str> = Vec::new();
-    while maximum_clique.len() < highest_degree {
-        let mut rng = rand::thread_rng();
+    let mut max_clique: Vec<&str> = Vec::new();
+    while max_clique.len() < highest_degree {
         let mut ks = graph.keys().collect_vec();
-        ks.shuffle(&mut rng);
+        ks.shuffle(&mut rand::thread_rng());
 
         let mut clique: Vec<&str> = Vec::new();
         for k in ks {
-            let mut belongs = true;
-            for c in &clique {
-                if !graph[c].contains(k) {
-                    belongs = false;
-                }
-            }
-            if belongs {
+            if clique.iter().all(|c| graph[c].contains(k)) {
                 let _ = &clique.push(k);
             }
         }
-        if clique.len() > maximum_clique.len() {
-            maximum_clique = clique;
+
+        if clique.len() > max_clique.len() {
+            max_clique = clique;
         }
     }
-    let password = maximum_clique.iter().sorted().join(",");
+    let password = max_clique.iter().sorted().join(",");
 
     println!("solution part 2: {password}");
     Ok(())
