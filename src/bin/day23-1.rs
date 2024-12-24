@@ -17,23 +17,23 @@ fn main() -> io::Result<()> {
         });
 
     let ks = graph.keys().sorted().collect_vec();
-    let mut triangle_sets = 0;
+    let mut tri_cliques = 0;
     for (i, a) in ks.iter().enumerate() {
         for j in (i + 1)..ks.len() {
             for k in (j + 1)..ks.len() {
                 let b = ks[j];
                 let c = ks[k];
-                if graph[b].contains(a)
+                if (a.starts_with('t') || b.starts_with('t') || c.starts_with('t'))
+                    && graph[b].contains(a)
                     && graph[c].contains(a)
                     && graph[c].contains(b)
-                    && (a.starts_with('t') || b.starts_with('t') || c.starts_with('t'))
                 {
-                    triangle_sets += 1;
+                    tri_cliques += 1;
                 }
             }
         }
     }
 
-    println!("solution part 1: {triangle_sets}");
+    println!("solution part 1: {tri_cliques}");
     Ok(())
 }
