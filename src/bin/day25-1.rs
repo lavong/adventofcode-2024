@@ -28,12 +28,7 @@ fn main() -> io::Result<()> {
     let mut fitting_keylock_pairs = 0;
     for key in &keys {
         for lock in &locks {
-            if key
-                .iter()
-                .zip(lock.iter())
-                .map(|(k, l)| k + l)
-                .all(|h| h < 8)
-            {
+            if key.iter().zip(lock.iter()).all(|(k, l)| k + l < 8) {
                 fitting_keylock_pairs += 1;
             }
         }
