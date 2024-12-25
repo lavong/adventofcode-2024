@@ -10,27 +10,30 @@ fn main() -> io::Result<()> {
     let mut locks = Vec::new();
     for kl in input.split("\n\n") {
         let keylock = kl.lines().map(|l| l.chars().collect_vec()).collect_vec();
+        let mut heights = vec![0; keylock.len()];
+        for y in 0..keylock.len() {
+            for x in 0..keylock[y].len() {
+                if keylock[y][x] == '#' {
+                    heights[x] += 1;
+                }
+            }
+        }
         if keylock[0][0] == '#' {
-            locks.push(keylock);
+            locks.push(heights);
         } else {
-            keys.push(keylock);
+            keys.push(heights);
         }
     }
 
     let mut fitting_keylock_pairs = 0;
     for key in &keys {
         for lock in &locks {
-            let mut fits = true;
-
-            for y in 0..key.len() {
-                for x in 0..key[y].len() {
-                    if key[y][x] == '#' && lock[y][x] == '#' {
-                        fits = false;
-                    }
-                }
-            }
-
-            if fits {
+            if key
+                .iter()
+                .zip(lock.iter())
+                .map(|(k, l)| k + l)
+                .all(|h| h < 8)
+            {
                 fitting_keylock_pairs += 1;
             }
         }
