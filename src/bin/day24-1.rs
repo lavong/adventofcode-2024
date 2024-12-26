@@ -27,14 +27,12 @@ fn main() -> io::Result<()> {
 fn parse_input(input: &String) -> (HashMap<&str, u32>, HashMap<&str, (&str, &str, &str)>) {
     let (in_wires, in_gates) = input.split_once("\n\n").unwrap();
 
-    let wires: HashMap<&str, u32> = in_wires
-        .lines()
+    let wires = (in_wires.lines())
         .map(|l| l.split_once(": ").unwrap())
         .map(|(w, c)| (w, c.parse().unwrap()))
         .collect();
 
-    let gates = in_gates
-        .lines()
+    let gates = (in_gates.lines())
         .map(|l| {
             let (s, out) = l.split_once(" -> ").unwrap();
             let (a, op, b) = s.split_whitespace().next_tuple().unwrap();
