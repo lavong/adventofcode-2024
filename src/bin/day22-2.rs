@@ -21,15 +21,15 @@ fn main() -> io::Result<()> {
         }
 
         let mut cache = HashSet::new();
-        for (a, b, c, d, e) in prices.iter().tuple_windows() {
-            let diff_pattern = [a, b, c, d, e]
+        for (p1, p2, p3, p4, p5) in prices.iter().tuple_windows() {
+            let diff_pattern = [p1, p2, p3, p4, p5]
                 .iter()
                 .tuple_windows()
                 .map(|(n, m)| **m as i64 - **n as i64)
                 .collect_tuple()
                 .unwrap();
             if cache.insert(diff_pattern) {
-                *bananas.entry(diff_pattern).or_default() += e;
+                *bananas.entry(diff_pattern).or_default() += p5;
             }
         }
     }
